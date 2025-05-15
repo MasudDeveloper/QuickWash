@@ -1,6 +1,8 @@
 package com.mrdeveloper.quickwash;
 
 import android.os.Bundle;
+import android.widget.CheckBox;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +13,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class LoginActivity extends AppCompatActivity {
 
-    AppCompatButton btnSignUp, btnSignIn;
+    AppCompatButton btnSignUp, btnSignIn, signUpButton;
+    CheckBox checkbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,5 +26,28 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        btnSignUp = findViewById(R.id.btnSignUp);
+        btnSignIn = findViewById(R.id.btnSignIn);
+        signUpButton = findViewById(R.id.signUpButton);
+        checkbox = findViewById(R.id.checkbox);
+
+        // SignIn বাটন সিলেক্ট করুন (ডিফল্ট)
+        btnSignIn.setSelected(true);
+
+        // SignUp বাটনে ক্লিক লিসেনার
+        btnSignUp.setOnClickListener(v -> {
+            btnSignIn.setSelected(false);
+            btnSignUp.setSelected(true); // (যদি প্রয়োজন হয়)
+            Toast.makeText(this, "Sign Up Clicked", Toast.LENGTH_SHORT).show();
+        });
+
+        // SignIn বাটনে ক্লিক লিসেনার
+        btnSignIn.setOnClickListener(v -> {
+            btnSignIn.setSelected(true);
+            btnSignUp.setSelected(false);
+            Toast.makeText(this, "Sign In Clicked", Toast.LENGTH_SHORT).show();
+        });
+
     }
 }
