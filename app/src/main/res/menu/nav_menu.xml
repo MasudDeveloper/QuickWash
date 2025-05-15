@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--    <item-->
+<!--        android:id="@+id/home"-->
+<!--        android:title="হোম"-->
+<!--        android:icon="@drawable/img_nav_home"-->
+<!--        android:checkable="true"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/helpCenter"-->
+<!--        android:title="হেল্প সেন্টার"-->
+<!--        android:icon="@drawable/img_nav_help_center"-->
+<!--        android:checkable="true"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/whatsApp"-->
+<!--        android:title="হেয়াটসঅ্যাপ"-->
+<!--        android:icon="@drawable/img_nav_whatsapp"-->
+<!--        android:checkable="true"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/telegram"-->
+<!--        android:title="টেলিগ্রাম গ্রুপ"-->
+<!--        android:icon="@drawable/img_nav_telegram"-->
+<!--        android:checkable="true"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/facebook"-->
+<!--        android:title="ফেসবুক গ্রুপ"-->
+<!--        android:icon="@drawable/img_nav_facebook"-->
+<!--        android:checkable="true"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/youtube"-->
+<!--        android:title="ইউটিউব"-->
+<!--        android:icon="@drawable/img_nav_youtube"-->
+<!--        android:checkable="true"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/generalQuestion"-->
+<!--        android:title="সাধারণ জিজ্ঞাসা"-->
+<!--        android:icon="@drawable/img_nav_general_question"-->
+<!--        android:checkable="true"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/privacyPolicy"-->
+<!--        android:title="প্রাইভেসি পলিসি"-->
+<!--        android:icon="@drawable/img_nav_privacy_policy"-->
+<!--        android:checkable="true"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/logout"-->
+<!--        android:title="লগ আউট"-->
+<!--        android:icon="@drawable/img_nav_logout"-->
+<!--        android:checkable="true"-->
+<!--        />-->
+
+
+</menu>
