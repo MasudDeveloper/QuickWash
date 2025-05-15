@@ -1,5 +1,6 @@
 package com.mrdeveloper.quickwash;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -33,12 +34,14 @@ public class LoginActivity extends AppCompatActivity {
         checkbox = findViewById(R.id.checkbox);
 
         // SignIn বাটন সিলেক্ট করুন (ডিফল্ট)
-        btnSignIn.setSelected(true);
+        btnSignUp.setSelected(true);
 
         // SignUp বাটনে ক্লিক লিসেনার
         btnSignUp.setOnClickListener(v -> {
             btnSignIn.setSelected(false);
             btnSignUp.setSelected(true); // (যদি প্রয়োজন হয়)
+            btnSignUp.setTextColor(Color.WHITE);
+            btnSignIn.setTextColor(Color.BLACK);
             Toast.makeText(this, "Sign Up Clicked", Toast.LENGTH_SHORT).show();
         });
 
@@ -46,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(v -> {
             btnSignIn.setSelected(true);
             btnSignUp.setSelected(false);
+            btnSignUp.setTextColor(Color.BLACK);
+            btnSignIn.setTextColor(Color.WHITE);
             Toast.makeText(this, "Sign In Clicked", Toast.LENGTH_SHORT).show();
         });
 
