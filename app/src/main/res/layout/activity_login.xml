@@ -36,7 +36,7 @@
 
         <!-- SignUp বাটন (বাম পাশে radius সহ) -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_signup"
+            android:id="@+id/btnSignUp"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -46,7 +46,7 @@
 
         <!-- SignIn বাটন (ডান পাশে সিলেক্টেবল) -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_signin"
+            android:id="@+id/btnSignIn"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
