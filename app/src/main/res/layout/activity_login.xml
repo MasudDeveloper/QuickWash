@@ -91,7 +91,9 @@
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/baseline_email_24"
             app:endIconMode="clear_text"
-            android:hint="Enter Your Email"
+            android:hint="Enter Your Number"
+            app:counterEnabled="true"
+            app:counterMaxLength="11"
             android:layout_marginTop="5dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="10dp"
@@ -100,7 +102,8 @@
                 android:id="@+id/edEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:maxLength="11"
+                android:inputType="phone"
                 android:textColor="@color/black"
                 />
 
@@ -193,21 +196,24 @@
         >
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loginEmailInputLayout"
+            android:id="@+id/loginPhoneInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/baseline_email_24"
             app:endIconMode="clear_text"
-            android:hint="Enter Your Email"
+            android:hint="Enter Your Number"
+            app:counterEnabled="true"
+            app:counterMaxLength="11"
             android:layout_marginTop="5dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="10dp"
             >
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/loginEdEmail"
+                android:id="@+id/loginEdPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
+                android:maxLength="11"
+                android:inputType="phone"
                 android:textColor="@color/black"
                 />
 

@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<!--    <item-->
-<!--        android:id="@+id/home"-->
-<!--        android:title="হোম"-->
-<!--        android:icon="@drawable/img_nav_home"-->
-<!--        android:checkable="true"-->
-<!--        />-->
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/img_nav_home"
+        android:checkable="true"
+        />
 
 <!--    <item-->
 <!--        android:id="@+id/helpCenter"-->
@@ -58,12 +58,12 @@
 <!--        android:checkable="true"-->
 <!--        />-->
 
-<!--    <item-->
-<!--        android:id="@+id/logout"-->
-<!--        android:title="লগ আউট"-->
-<!--        android:icon="@drawable/img_nav_logout"-->
-<!--        android:checkable="true"-->
-<!--        />-->
+    <item
+        android:id="@+id/logout"
+        android:title="Logout"
+        android:icon="@drawable/img_nav_logout"
+        android:checkable="true"
+        />
 
 
 </menu>

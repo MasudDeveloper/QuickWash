@@ -1,6 +1,7 @@
 package com.mrdeveloper.quickwash;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -43,13 +44,17 @@ public class SplashScreenActivity extends AppCompatActivity {
         imageView.setAnimation(imageAnimation);
         textView.setAnimation(textAnimation);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        new Handler().postDelayed(() -> {
+            SharedPreferences pref = getSharedPreferences("onboarding", MODE_PRIVATE);
+            boolean isFirstTime = pref.getBoolean("firstTime", true);
+
+            if (isFirstTime) {
+                startActivity(new Intent(SplashScreenActivity.this, OnboardingActivity.class));
+            } else {
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                finish();
             }
-        },2000);
+            finish();
+        }, 2000); // 2 second delay
 
     }
 }
