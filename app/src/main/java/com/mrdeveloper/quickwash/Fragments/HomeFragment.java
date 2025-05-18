@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
 
         addCategory();
 
-        LaundryCategoryAdapter adapter = new LaundryCategoryAdapter(context, categoryList);
+        LaundryCategoryAdapter adapter = new LaundryCategoryAdapter(context, categoryList, "Item1");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         rvLaundryCategory.setLayoutManager(layoutManager);
@@ -101,53 +101,14 @@ public class HomeFragment extends Fragment {
 
         categoryList = new ArrayList<>();
 
-        categoryList.add(new LaundryCategory(
-                "Wash Only",
-                "শুধু ধুয়ে দেয়া হবে",
-                R.drawable.img_wash_only
-        ));
-
-        categoryList.add(new LaundryCategory(
-                "Wash & Fold",
-                "ধুয়ে ভাঁজ করে দেয়া হবে",
-                R.drawable.img_wash_and_fold
-        ));
-
-        categoryList.add(new LaundryCategory(
-                "Wash & Iron",
-                "ধুয়ে ইস্ত্রি করা হবে",
-                R.drawable.img_wash_and_iron
-        ));
-
-        categoryList.add(new LaundryCategory(
-                "Dry Cleaning",
-                "ড্রাই ক্লিনিং পরিষেবা (সুট, গাউন ইত্যাদি)",
-                R.drawable.img_dry_clean
-        ));
-
-        categoryList.add(new LaundryCategory(
-                "Iron Only",
-                "শুধু ইস্ত্রি করা হবে",
-                R.drawable.img_iron_only
-        ));
-
-        categoryList.add(new LaundryCategory(
-                "Shoe Cleaning",
-                "জুতা ধোয়া ও পলিশ",
-                R.drawable.img_shoe_cleaning
-        ));
-
-        categoryList.add(new LaundryCategory(
-                "Curtain Cleaning",
-                "পর্দা ধোয়া ও ইস্ত্রি",
-                R.drawable.img_curtain_cleaning
-        ));
-
-        categoryList.add(new LaundryCategory(
-                "Blanket Cleaning",
-                "কম্বল ধোয়া",
-                R.drawable.img_blanket_cleaning
-        ));
+        categoryList.add(new LaundryCategory("1","Wash Only", "শুধু ধুয়ে দেয়া হবে", R.drawable.img_wash_only));
+        categoryList.add(new LaundryCategory("2","Wash & Fold", "ধুয়ে ভাঁজ করে দেয়া হবে", R.drawable.img_wash_and_fold));
+        categoryList.add(new LaundryCategory("3","Wash & Iron", "ধুয়ে ইস্ত্রি করা হবে", R.drawable.img_wash_and_iron));
+        categoryList.add(new LaundryCategory("4","Dry Cleaning", "ড্রাই ক্লিনিং পরিষেবা (সুট, গাউন ইত্যাদি)", R.drawable.img_dry_clean));
+        categoryList.add(new LaundryCategory("5","Iron Only", "শুধু ইস্ত্রি করা হবে", R.drawable.img_iron_only));
+        categoryList.add(new LaundryCategory("6","Shoe Cleaning", "জুতা ধোয়া ও পলিশ", R.drawable.img_shoe_cleaning));
+        categoryList.add(new LaundryCategory("7","Curtain Cleaning", "পর্দা ধোয়া ও ইস্ত্রি", R.drawable.img_curtain_cleaning));
+        categoryList.add(new LaundryCategory("8","Blanket Cleaning", "কম্বল ধোয়া", R.drawable.img_blanket_cleaning));
 
     }
 
