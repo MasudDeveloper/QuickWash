@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -13,17 +13,20 @@
         android:layout_height="match_parent"
         >
         <!-- Custom Toolbar -->
-        <include
-            layout="@layout/custom_toolbar"
-            android:id="@+id/customToolbar"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/icon_menu"
+            app:menu="@menu/tool_menu"
+            android:layout_marginEnd="10dp"
+            />
 
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/customToolbar"
+            android:layout_below="@id/toolbar"
             android:background="@drawable/bg_fragment"
             android:layout_above="@id/bottomNavigationView"
             />

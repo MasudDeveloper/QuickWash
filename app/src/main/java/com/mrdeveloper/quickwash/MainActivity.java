@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     TextView user_name, refer_id;
     ImageView notification_icon, toolBarVerifyIcon;
 
-    ProgressBar toolbarProgressBar;
     RelativeLayout loading_layout;
 
     public static String REFER_ID;
@@ -89,14 +88,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         drawerLayout = findViewById(R.id.drawerLayout);
-        toolbar = findViewById(R.id.customToolbar);
-        profile_image = findViewById(R.id.profile_image);
-        user_name = findViewById(R.id.user_name);
-        refer_id = findViewById(R.id.refer_id);
-        notification_icon = findViewById(R.id.notification_icon);
-        toolbarProgressBar = findViewById(R.id.toolbarProgressBar);
-//        toolBarVerifyIcon = findViewById(R.id.toolBarVerifyIcon);
-//        loading_layout = findViewById(R.id.loading_layout);
+        toolbar = findViewById(R.id.toolbar);
 
 
         botNavView = findViewById(R.id.bottomNavigationView);
@@ -105,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
         //loadData(number);
 
-        toolbarProgressBar.setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
 
         View headerView = navigationView.getHeaderView(0);
         TextView navTvName = headerView.findViewById(R.id.tvName);
@@ -124,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout.addDrawerListener(toggle);
 
-        profile_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.open();
-            }
-        });
+//        profile_image.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                drawerLayout.open();
+//            }
+//        });
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -152,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        replaceFragment(new HomeFragment());
+
         botNavView.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public boolean onItemSelect(int i) {
@@ -165,10 +158,8 @@ public class MainActivity extends AppCompatActivity {
                     case 2:
                         replaceFragment(new ProfileFragment());
                         return true;
-                    default:
-                        replaceFragment(new HomeFragment());
-                        return true;
                 }
+                return false;
             }
         });
 

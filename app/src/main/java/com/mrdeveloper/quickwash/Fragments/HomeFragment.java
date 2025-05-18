@@ -1,66 +1,157 @@
 package com.mrdeveloper.quickwash.Fragments;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
+import com.mrdeveloper.quickwash.Adapter.LaundryCategoryAdapter;
+import com.mrdeveloper.quickwash.Model.LaundryCategory;
 import com.mrdeveloper.quickwash.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    RecyclerView rvLaundryCategory, orderRecyclerView;
+    TextView noOrderTv;
+    Context context;
+    ImageSlider imageSlider;
+    List<LaundryCategory> categoryList;
+    AppCompatButton btnCurrent, btnPrevious;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View myView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        context = getContext();
+        rvLaundryCategory = myView.findViewById(R.id.rvLaundryCategory);
+        orderRecyclerView = myView.findViewById(R.id.orderRecyclerView);
+        imageSlider = myView.findViewById(R.id.image_slider);
+        btnCurrent = myView.findViewById(R.id.btnCurrent);
+        btnPrevious = myView.findViewById(R.id.btnPrevious);
+        noOrderTv = myView.findViewById(R.id.noOrderTv);
+
+        addCategory();
+
+        LaundryCategoryAdapter adapter = new LaundryCategoryAdapter(context, categoryList);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        rvLaundryCategory.setLayoutManager(layoutManager);
+        rvLaundryCategory.setAdapter(adapter);
+
+        List<SlideModel> slideModels = new ArrayList<>();
+        slideModels.add(new SlideModel(R.drawable.cover1,  ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.cover2,  ScaleTypes.FIT));
+
+        imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+
+        // SignIn বাটন সিলেক্ট করুন (ডিফল্ট)
+        btnCurrent.setSelected(true);
+
+        // SignUp বাটনে ক্লিক লিসেনার
+        btnCurrent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnPrevious.setSelected(false);
+                btnCurrent.setSelected(true);
+                btnCurrent.setTextColor(Color.WHITE);
+                btnPrevious.setTextColor(Color.BLACK);
+//                signUpLayout.setVisibility(View.VISIBLE);
+//                signInLayout.setVisibility(View.GONE);
+                noOrderTv.setText("No Current Orders");
+            }
+        });
+
+        // SignIn বাটনে ক্লিক লিসেনার
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnPrevious.setSelected(true);
+                btnCurrent.setSelected(false);
+                btnCurrent.setTextColor(Color.BLACK);
+                btnPrevious.setTextColor(Color.WHITE);
+//                signUpLayout.setVisibility(View.GONE);
+//                signInLayout.setVisibility(View.VISIBLE);
+                noOrderTv.setText("No Previous Orders");
+            }
+        });
+
+
+
+        return myView;
+    } // =============== ============== On Create End =============
+
+
+    public void addCategory() {
+
+        categoryList = new ArrayList<>();
+
+        categoryList.add(new LaundryCategory(
+                "Wash Only",
+                "শুধু ধুয়ে দেয়া হবে",
+                R.drawable.img_wash_only
+        ));
+
+        categoryList.add(new LaundryCategory(
+                "Wash & Fold",
+                "ধুয়ে ভাঁজ করে দেয়া হবে",
+                R.drawable.img_wash_and_fold
+        ));
+
+        categoryList.add(new LaundryCategory(
+                "Wash & Iron",
+                "ধুয়ে ইস্ত্রি করা হবে",
+                R.drawable.img_wash_and_iron
+        ));
+
+        categoryList.add(new LaundryCategory(
+                "Dry Cleaning",
+                "ড্রাই ক্লিনিং পরিষেবা (সুট, গাউন ইত্যাদি)",
+                R.drawable.img_dry_clean
+        ));
+
+        categoryList.add(new LaundryCategory(
+                "Iron Only",
+                "শুধু ইস্ত্রি করা হবে",
+                R.drawable.img_iron_only
+        ));
+
+        categoryList.add(new LaundryCategory(
+                "Shoe Cleaning",
+                "জুতা ধোয়া ও পলিশ",
+                R.drawable.img_shoe_cleaning
+        ));
+
+        categoryList.add(new LaundryCategory(
+                "Curtain Cleaning",
+                "পর্দা ধোয়া ও ইস্ত্রি",
+                R.drawable.img_curtain_cleaning
+        ));
+
+        categoryList.add(new LaundryCategory(
+                "Blanket Cleaning",
+                "কম্বল ধোয়া",
+                R.drawable.img_blanket_cleaning
+        ));
+
     }
+
+
+
+
 }

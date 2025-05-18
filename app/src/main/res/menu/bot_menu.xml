@@ -16,6 +16,13 @@
         />
 
     <item
+        android:id="@+id/my_cart"
+        android:title="My Cart"
+        android:icon="@drawable/icon_cart"
+        android:checkable="true"
+        />
+
+    <item
         android:id="@+id/profile"
         android:title="Profile"
         android:icon="@drawable/profile"
