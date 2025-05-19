@@ -76,12 +76,12 @@ public class ProductsListActivity extends AppCompatActivity {
                 });
 
                 // Highlight selected tab
-                updateTabAppearance(tab, true);
+                //updateTabAppearance(tab, true);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                updateTabAppearance(tab, false);
+                //updateTabAppearance(tab, false);
             }
 
             @Override
@@ -121,4 +121,5 @@ public class ProductsListActivity extends AppCompatActivity {
             }
         }
     }
+
 }

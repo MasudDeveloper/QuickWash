@@ -45,6 +45,7 @@ public class LaundryCategoryAdapter extends RecyclerView.Adapter<LaundryCategory
     @Override
     public void onBindViewHolder(@NonNull LaundryCategoryAdapter.ViewHolder holder, int position) {
         LaundryCategory category = categoryList.get(position);
+
         holder.txtTitle.setText(category.getTitle());
         holder.imgIcon.setImageResource(category.getIconResId());
 

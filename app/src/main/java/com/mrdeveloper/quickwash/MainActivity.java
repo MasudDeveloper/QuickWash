@@ -5,19 +5,16 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -33,16 +30,23 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.mrdeveloper.quickwash.Fragments.CartFragment;
+import com.mrdeveloper.quickwash.Helper.CartManager;
 import com.mrdeveloper.quickwash.Fragments.HomeFragment;
 import com.mrdeveloper.quickwash.Fragments.OrdersFragment;
 import com.mrdeveloper.quickwash.Fragments.ProfileFragment;
+import com.mrdeveloper.quickwash.Interface.ApiInterface;
+import com.mrdeveloper.quickwash.Interface.ApiResponse;
+import com.mrdeveloper.quickwash.Interface.RetrofitClient;
+import com.mrdeveloper.quickwash.Model.User;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.ibrahimsn.lib.OnItemSelectedListener;
 import me.ibrahimsn.lib.SmoothBottomBar;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,10 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
     RelativeLayout loading_layout;
 
-    public static String REFER_ID;
+    public static String PHONE;
     public static String USER_NAME;
     public static int USER_ID;
-    public static int IS_VERIFIED = 0;
     String phone;
 
     @Override
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+        fetchUserByPhone(phone);
 
         drawerLayout = findViewById(R.id.drawerLayout);
         toolbar = findViewById(R.id.toolbar);
@@ -114,13 +119,6 @@ public class MainActivity extends AppCompatActivity {
         );
 
         drawerLayout.addDrawerListener(toggle);
-
-//        profile_image.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawerLayout.open();
-//            }
-//        });
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -156,6 +154,9 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(new OrdersFragment());
                         return true;
                     case 2:
+                        replaceFragment(new CartFragment());
+                        return true;
+                    case 3:
                         replaceFragment(new ProfileFragment());
                         return true;
                 }
@@ -217,4 +218,34 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "ফ্র্যাগমেন্ট লোড করতে ব্যর্থ হয়েছে", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void fetchUserByPhone(String phone) {
+        ApiInterface apiService = RetrofitClient.getApiService();
+        Call<ApiResponse> call = apiService.getUserByPhone(phone);
+
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().isSuccess()) {
+                        User user = response.body().getUser();
+
+                        USER_ID = user.getId();
+                        USER_NAME = user.getName();
+                        PHONE = user.getPhone();
+
+                    } else {
+                        Toast.makeText(MainActivity.this, "User not found", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }
