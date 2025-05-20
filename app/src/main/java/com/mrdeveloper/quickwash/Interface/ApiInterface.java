@@ -54,5 +54,8 @@ public interface ApiInterface {
     @POST("submit_order.php")
     Call<ResponseBody> submitOrder(@Body OrderRequest orderRequest);
 
+    @GET("get_orders.php")
+    Call<List<OrderRequest>> getOrders(@Query("user_id") int user_id);
+
 
 }

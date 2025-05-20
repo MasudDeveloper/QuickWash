@@ -4,25 +4,12 @@ import java.util.List;
 
 public class OrderRequest {
 
-    int user_id;
-    String name, phone, address, pickup_date, pickup_time, delivery_date, delivery_type, shop_name, payment_method;
+    int user_id, id;
+    String name, phone, address, pickup_date, pickup_time, delivery_date, delivery_type, shop_name, payment_method, status, created_at;
     double total_amount;
     List<ServiceItem> service_list;
 
     public OrderRequest() {
-    }
-
-    public OrderRequest(int user_id, String name, String phone, String address, String pickup_date, String pickup_time, String delivery_date, String payment_method, double total_amount, List<ServiceItem> service_list) {
-        this.user_id = user_id;
-        this.name = name;
-        this.phone = phone;
-        this.address = address;
-        this.pickup_date = pickup_date;
-        this.pickup_time = pickup_time;
-        this.delivery_date = delivery_date;
-        this.payment_method = payment_method;
-        this.total_amount = total_amount;
-        this.service_list = service_list;
     }
 
     public int getUser_id() {
@@ -119,5 +106,29 @@ public class OrderRequest {
 
     public void setShop_name(String shop_name) {
         this.shop_name = shop_name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 }

@@ -34,6 +34,7 @@ import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.mrdeveloper.quickwash.Fragments.CartFragment;
+import com.mrdeveloper.quickwash.Fragments.CategoriesFragment;
 import com.mrdeveloper.quickwash.Helper.CartManager;
 import com.mrdeveloper.quickwash.Fragments.HomeFragment;
 import com.mrdeveloper.quickwash.Fragments.OrdersFragment;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         //loadData(number);
         if (openCart) {
             replaceFragment(new CartFragment());
-            botNavView.setItemActiveIndex(2); // যদি Cart second item হয়
+            botNavView.setItemActiveIndex(3); // যদি Cart second item হয়
         } else {
             replaceFragment(new HomeFragment());
             botNavView.setItemActiveIndex(0); // Home
@@ -163,12 +164,15 @@ public class MainActivity extends AppCompatActivity {
                         replaceFragment(new HomeFragment());
                         return true;
                     case 1:
-                        replaceFragment(new OrdersFragment());
+                        replaceFragment(new CategoriesFragment());
                         return true;
                     case 2:
-                        replaceFragment(new CartFragment());
+                        replaceFragment(new OrdersFragment());
                         return true;
                     case 3:
+                        replaceFragment(new CartFragment());
+                        return true;
+                    case 4:
                         replaceFragment(new ProfileFragment());
                         return true;
                 }
