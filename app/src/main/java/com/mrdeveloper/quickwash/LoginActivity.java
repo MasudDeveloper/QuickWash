@@ -222,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
             password1InputLayout.setError("দূর্বল পাসওয়ার্ড");
             password2InputLayout.setError("দূর্বল পাসওয়ার্ড");
         } else if (!checkbox.isChecked()) {
-            checkbox.setError("Check the Terms and Condition");
+            Toast.makeText(LoginActivity.this, "Read and Check the Terms and Condition", Toast.LENGTH_SHORT).show();
         } else {
             progressDialog = new ProgressDialog(LoginActivity.this);
             progressDialog.setMessage("Loading, please wait...");
