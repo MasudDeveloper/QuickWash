@@ -69,6 +69,7 @@
             android:layout_height="70dp"
             android:layout_alignParentBottom="true"
             app:backgroundColor="@color/blue"
+            app:activeItem="0"
             app:menu="@menu/bot_menu"/>
     </RelativeLayout>
 

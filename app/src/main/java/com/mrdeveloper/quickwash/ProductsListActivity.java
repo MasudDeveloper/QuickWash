@@ -1,18 +1,24 @@
 package com.mrdeveloper.quickwash;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.mrdeveloper.quickwash.Adapter.ViewPagerAdapter;
@@ -26,6 +32,8 @@ public class ProductsListActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager;
     List<LaundryCategory> categoryList;
+    MaterialToolbar toolbar;
+    AppCompatButton btnPlaceOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,14 @@ public class ProductsListActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
+        toolbar = findViewById(R.id.toolbar);
+        btnPlaceOrder = findViewById(R.id.btnPlaceOrder);
+
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         int selectedPosition = getIntent().getIntExtra("selected_position", 0);
 
@@ -88,6 +104,16 @@ public class ProductsListActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {}
         });
 
+        btnPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductsListActivity.this, MainActivity.class);
+                intent.putExtra("openCart", true);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
     }
 
@@ -122,4 +148,11 @@ public class ProductsListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            getOnBackPressedDispatcher().onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

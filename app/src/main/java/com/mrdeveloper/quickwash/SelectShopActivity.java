@@ -36,7 +36,7 @@ public class SelectShopActivity extends AppCompatActivity {
 
     private MapView mapView;
     private RecyclerView recyclerView;
-    private List<String> shopList = Arrays.asList("Bismillah Laundry-2", "Mirpur Cleaners", "Dhaka Dry Wash");
+    private List<String> shopList = Arrays.asList("Bismillah Laundry-2", "Palton Cleaners", "Dhaka Dry Wash");
     private MyLocationNewOverlay locationOverlay;
 
     @Override

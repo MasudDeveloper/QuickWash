@@ -4,8 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -14,12 +22,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,9 +47,14 @@ import com.mrdeveloper.quickwash.Model.ServiceItem;
 import com.mrdeveloper.quickwash.R;
 import com.mrdeveloper.quickwash.SelectShopActivity;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -150,7 +166,7 @@ public class CartFragment extends Fragment {
             String paymentMethod = spinnerPaymentMethod.getSelectedItem().toString();
 
             if (cartList.isEmpty()) {
-                Toast.makeText(context, "Cart is Empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Cart is Empty", Toast.LENGTH_SHORT).show();
             } else if (name.isEmpty()) {
                 Toast.makeText(getContext(), "Please enter your name", Toast.LENGTH_SHORT).show();
                 editName.setError("Please enter your name");
@@ -209,7 +225,9 @@ public class CartFragment extends Fragment {
         }
     }
 
-    private void submitOrder(String name, String phone, String address, String pickupDate, String pickupTime, String deliveryDate, String deliveryType, String selectedShop, String paymentMethod) {
+    private void submitOrder(String name, String phone, String address, String pickupDate,
+                             String pickupTime, String deliveryDate, String deliveryType,
+                             String selectedShop, String paymentMethod) {
 
         OrderRequest order = new OrderRequest();
         order.setUser_id(MainActivity.USER_ID);
@@ -236,17 +254,24 @@ public class CartFragment extends Fragment {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    showSuccessDialog();
-                    CartManager.clearCart(getContext());
-                    updateTotalUI();
-                    editName.setText("");
-                    editPhone.setText("");
-                    editAddress.setText("");
-                    editPickupDate.setText("");
-                    editPickupTime.setText("");
-                    editDeliveryDate.setText("");
-                    spinnerPaymentMethod.setSelection(0);
-                    Toast.makeText(getContext(), "Order placed successfully", Toast.LENGTH_SHORT).show();
+                    try {
+                        // Get order ID from response
+                        String responseString = response.body().string();
+                        JSONObject jsonResponse = new JSONObject(responseString);
+                        String orderId = jsonResponse.getString("order_id");
+
+                        // Generate invoice
+                        Bitmap invoiceBitmap = generateInvoiceBitmap(order, orderId);
+                        showInvoiceDialog(invoiceBitmap, orderId);
+
+                        // Clear cart and reset fields
+                        CartManager.clearCart(getContext());
+                        resetFormFields();
+
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "Error processing invoice", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
                 } else {
                     Toast.makeText(getContext(), "Failed to place order", Toast.LENGTH_SHORT).show();
                 }
@@ -254,12 +279,10 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getContext(), "Network error"+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Network error: "+t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-
     private void showSuccessDialog() {
         new AlertDialog.Builder(getContext())
                 .setTitle("Order Confirmed")
@@ -272,7 +295,7 @@ public class CartFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                 (view, year, month, dayOfMonth) -> {
-                    String date = year + "-" + (month + 1) + "-" + dayOfMonth;
+                    String date = dayOfMonth + "-" + (month + 1) + "-" + year;
                     editText.setText(date);
                 },
                 calendar.get(Calendar.YEAR),
@@ -320,6 +343,173 @@ public class CartFragment extends Fragment {
             selectedShop = data.getStringExtra("shop_name");
             btnSelectShop.setText("Selected Shop: " + selectedShop);
         }
+    }
+
+    private Bitmap generateInvoiceBitmap(OrderRequest order, String orderId) {
+        int width = 1080;
+        int height = 1920;
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawColor(Color.WHITE);
+
+        Paint titlePaint = new Paint();
+        titlePaint.setColor(Color.BLACK);
+        titlePaint.setTextSize(48);
+        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        titlePaint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText("Azad Laundry Services", width / 2, 100, titlePaint);
+
+        Paint subTitlePaint = new Paint();
+        subTitlePaint.setTextSize(32);
+        subTitlePaint.setColor(Color.DKGRAY);
+        subTitlePaint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText("Customer Invoice", width / 2, 150, subTitlePaint);
+
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(26);
+        paint.setTextAlign(Paint.Align.LEFT);
+
+        int y = 220;
+        canvas.drawText("Order ID: " + orderId, 50, y, paint);
+        canvas.drawText("Order Date: " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()), width / 2, y, paint);
+
+        y += 60;
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT_BOLD, Typeface.BOLD));
+        canvas.drawText("Customer Info:", 50, y, paint);
+        paint.setTypeface(Typeface.DEFAULT);
+
+        y += 40;
+        canvas.drawText("Name: " + order.getName(), 50, y, paint);
+        canvas.drawText("Phone: " + order.getPhone(), 50, y + 40, paint);
+        canvas.drawText("Address: " + order.getAddress(), 50, y + 80, paint);
+
+        y += 140;
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT_BOLD, Typeface.BOLD));
+        canvas.drawText("Order Details:", 50, y, paint);
+        paint.setTypeface(Typeface.DEFAULT);
+
+        y += 40;
+        canvas.drawText("Pickup: " + order.getPickup_date() + " at " + order.getPickup_time(), 50, y, paint);
+        canvas.drawText("Delivery: " + order.getDelivery_date() + " (" + order.getDelivery_type() + ")", 50, y + 40, paint);
+        canvas.drawText("Shop: " + order.getShop_name(), 50, y + 80, paint);
+        canvas.drawText("Payment Method: " + order.getPayment_method(), 50, y + 120, paint);
+
+        y += 180;
+
+        // Draw table headers
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT_BOLD, Typeface.BOLD));
+        canvas.drawLine(50, y, width - 50, y, paint);
+        canvas.drawText("Item", 60, y + 40, paint);
+        canvas.drawText("Qty", width / 2 - 100, y + 40, paint);
+        canvas.drawText("Unit", width / 2 + 50, y + 40, paint);
+        canvas.drawText("Total", width - 180, y + 40, paint);
+        canvas.drawLine(50, y + 60, width - 50, y + 60, paint);
+        paint.setTypeface(Typeface.DEFAULT);
+
+        y += 100;
+        double total = 0;
+        for (ServiceItem item : order.getService_list()) {
+            double subtotal = item.getQuantity() * item.getPrice_per_item();
+            total += subtotal;
+
+            canvas.drawText(item.getService_name(), 60, y, paint);
+            canvas.drawText(String.valueOf(item.getQuantity()), width / 2 - 100, y, paint);
+            canvas.drawText(String.format("%.2f", item.getPrice_per_item()), width / 2 + 50, y, paint);
+            canvas.drawText(String.format("%.2f", subtotal), width - 180, y, paint);
+            y += 40;
+        }
+
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT_BOLD, Typeface.BOLD));
+        canvas.drawLine(50, y + 10, width - 50, y + 10, paint);
+        canvas.drawText("Total Amount: " + String.format("%.2f BDT", total), width - 400, y + 50, paint);
+
+        // Status Seal
+        drawStatusSeal(canvas, width, y + 150, "CONFIRMED");
+
+        // Footer
+        paint.setTextSize(24);
+        paint.setTypeface(Typeface.DEFAULT);
+        canvas.drawText("Thank you for choosing us!", 50, height - 120, paint);
+        canvas.drawText("For support, call: 0123456789", 50, height - 80, paint);
+
+        return bitmap;
+    }
+
+
+    private void drawStatusSeal(Canvas canvas, int width, int yPos, String status) {
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(5);
+        paint.setAntiAlias(true);
+
+        // Draw circular seal
+        int centerX = width - 150;
+        int radius = 80;
+        canvas.drawCircle(centerX, yPos, radius, paint);
+
+        // Draw status text
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(30);
+        paint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText(status, centerX, yPos+10, paint);
+        paint.setTextSize(20);
+        canvas.drawText("ORDER", centerX, yPos+40, paint);
+    }
+
+    private void showInvoiceDialog(Bitmap invoiceBitmap, String orderId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Order Confirmation");
+
+        // Create ImageView to display invoice
+        ImageView imageView = new ImageView(getContext());
+        imageView.setImageBitmap(invoiceBitmap);
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+        // Add download button
+        builder.setView(imageView);
+        builder.setPositiveButton("Download", (dialog, which) -> {
+            saveInvoiceToGallery(invoiceBitmap, orderId);
+            Toast.makeText(getContext(), "Invoice saved to gallery", Toast.LENGTH_SHORT).show();
+        });
+
+        builder.setNegativeButton("Close", null);
+        builder.show();
+    }
+
+    private void saveInvoiceToGallery(Bitmap bitmap, String orderId) {
+        String fileName = "Invoice_" + orderId + ".jpg";
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+
+        ContentResolver resolver = getContext().getContentResolver();
+        Uri uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        try {
+            OutputStream outputStream = resolver.openOutputStream(uri);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void resetFormFields() {
+        editName.setText("");
+        editPhone.setText("");
+        editAddress.setText("");
+        editPickupDate.setText("");
+        editPickupTime.setText("");
+        editDeliveryDate.setText("");
+        spinnerPaymentMethod.setSelection(0);
+        updateTotalUI();
     }
 
 

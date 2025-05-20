@@ -30,6 +30,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.mrdeveloper.quickwash.Fragments.CartFragment;
 import com.mrdeveloper.quickwash.Helper.CartManager;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     public static String USER_NAME;
     public static int USER_ID;
     String phone;
+    boolean openCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("MyPrefs",MODE_PRIVATE);
         phone = sharedPreferences.getString("phone","");
+        openCart = getIntent().getBooleanExtra("openCart", false);
 
         if (phone.isEmpty()) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -101,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         //loadData(number);
+        if (openCart) {
+            replaceFragment(new CartFragment());
+            botNavView.setItemActiveIndex(2); // যদি Cart second item হয়
+        } else {
+            replaceFragment(new HomeFragment());
+            botNavView.setItemActiveIndex(0); // Home
+        }
+
 
 
         View headerView = navigationView.getHeaderView(0);
@@ -141,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        replaceFragment(new HomeFragment());
+        //replaceFragment(new HomeFragment());
 
         botNavView.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
@@ -181,13 +193,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 2. BadgeDrawable তৈরি করুন
-        BadgeDrawable badgeDrawable = BadgeDrawable.create(this);
-        badgeDrawable.setNumber(5); // Badge-এ সংখ্যা দেখাতে চাইলে
-        badgeDrawable.setBackgroundColor(Color.RED); // Badge-এর ব্যাকগ্রাউন্ড কালার
-        badgeDrawable.setBadgeTextColor(Color.WHITE); // টেক্সটের কালার
-        badgeDrawable.setVisible(true); // দেখানোর জন্য
 
-        //BadgeUtils.attachBadgeDrawable(badgeDrawable, notification_icon, null);
 
 
         //========================== OnBackPressed =====================
@@ -246,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 }
