@@ -1,57 +1,304 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
+    android:padding="16dp"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Fragments.CartFragment">
 
-    <!-- Cart Empty Message -->
-    <TextView
-        android:id="@+id/textEmptyCart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="🛒 Your cart is empty"
-        android:gravity="center"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        android:visibility="gone"
-        android:padding="16dp"/>
-
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerCart"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingBottom="8dp"/>
-
-    <!-- Bottom Info & Button -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical|end">
+        android:orientation="vertical">
+
+        <!-- Empty Cart Message -->
+        <TextView
+            android:id="@+id/textEmptyCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🛒 Your cart is empty"
+            android:gravity="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:padding="16dp" />
+
+        <!-- Cart Items List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:paddingBottom="8dp" />
+
+        <!-- 🔹 User Info Fields 🔹 -->
+
+        <LinearLayout
+            android:id="@+id/layoutDeliveryType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:weightSum="3"
+            >
+
+            <!-- Regular Delivery Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/icon_regular_delivery"
+                        android:contentDescription="@string/regular_delivery"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/regular"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/regular_delivery_time"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Premium Delivery Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPremium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/icon_premium_delivery"
+                        android:contentDescription="@string/premium_delivery"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/premium"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/premium_delivery_time"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Express Delivery Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardExpress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/icon_express_delivery"
+                        android:contentDescription="@string/express_delivery"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/express"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/express_delivery_time"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/textViewTotal"
-            android:text="Total: ৳0"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
+            android:id="@+id/textDeliveryTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delivery_time_not_selected"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"/>
 
         <Button
-            android:id="@+id/btnOrderNow"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnSelectShop"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order Now"
-            android:backgroundTint="@color/blue"
-            android:textColor="@android:color/white"/>
-    </LinearLayout>
+            android:text="Select Shop"
+            android:layout_marginTop="16dp"/>
 
-</LinearLayout>
+
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Name"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg" />
+
+        <EditText
+            android:id="@+id/editPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/editAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Address"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:gravity="top"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginTop="8dp"/>
+
+        <!-- 🔹 Pickup & Delivery Date/Time 🔹 -->
+
+        <EditText
+            android:id="@+id/editPickupDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pickup Date"
+            android:focusable="false"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/editPickupTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pickup Time"
+            android:focusable="false"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/editDeliveryDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Delivery Date"
+            android:focusable="false"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginTop="8dp"/>
+
+        <!-- 🔹 Payment Method 🔹 -->
+        <Spinner
+            android:id="@+id/spinnerPaymentMethod"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:background="@drawable/edittext_bg" />
+
+        <!-- 🔹 Total & Order Button 🔹 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical|end">
+
+            <TextView
+                android:id="@+id/textViewTotal"
+                android:text="Total: ৳0"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnOrderNow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Now"
+                android:backgroundTint="@color/blue"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

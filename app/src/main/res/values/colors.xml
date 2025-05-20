@@ -17,4 +17,6 @@
     <color name="dark_yellow">#8B8B00</color>
     <color name="blue_500">#3498DB</color>
     <color name="gray">#838181</color>
+    <color name="selected_card_color">#E3F2FD</color>
+    <color name="default_card_color">#FFFFFF</color>
 </resources>
