@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -46,7 +47,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     TextView tvOrderId, tvCustomerName, tvPhone, tvAddress, tvOrderDate, tvPickupDate, tvDeliveryDate, tvDeliveryType, tvTotalAmount, tvPaymentMethod;
     LinearLayout serviceContainer;
-    Button btnViewInvoice;
+    Button btnViewInvoice, btnTrackOrder;
     OrderRequest order;
     Chip chipStatus;
 
@@ -75,6 +76,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         chipStatus = findViewById(R.id.chipStatus);
         serviceContainer = findViewById(R.id.serviceContainer);
         btnViewInvoice = findViewById(R.id.btnViewInvoice);
+        btnTrackOrder = findViewById(R.id.btnTrackOrder);
 
         // Get order from intent
         order = (OrderRequest) getIntent().getSerializableExtra("order");
@@ -223,6 +225,12 @@ public class OrderDetailsActivity extends AppCompatActivity {
             }
         });
 
+        btnTrackOrder.setOnClickListener(v -> {
+            Intent intent = new Intent(OrderDetailsActivity.this, TrackOrderActivity.class);
+            intent.putExtra("status", order.getStatus());
+            startActivity(intent);
+        });
+
     }
 
     private int getStatusColor(String status) {
@@ -329,8 +337,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
         canvas.drawLine(50, y, width - 50, y, paint);
         canvas.drawText("Item", 60, y + 40, paint);
         canvas.drawText("Cat", width / 2 - 150, y + 40, paint);
-        canvas.drawText("Qty", width / 2 - 50, y + 40, paint);
-        canvas.drawText("Unit", width / 2 + 50, y + 40, paint);
+        canvas.drawText("Qty", width / 2 + 60, y + 40, paint);
+        canvas.drawText("Unit", width / 2 + 160, y + 40, paint);
         canvas.drawText("Total", width - 180, y + 40, paint);
         canvas.drawLine(50, y + 60, width - 50, y + 60, paint);
         paint.setTypeface(Typeface.DEFAULT);
@@ -343,8 +351,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
             canvas.drawText(item.getService_name(), 60, y, paint);
             canvas.drawText(item.getCategory_name(), width / 2 - 150, y, paint);
-            canvas.drawText(String.valueOf(item.getQuantity()), width / 2 - 50, y, paint);
-            canvas.drawText(String.format("%.2f", item.getPrice_per_item()), width / 2 + 50, y, paint);
+            canvas.drawText(String.valueOf(item.getQuantity()), width / 2 + 60 , y, paint);
+            canvas.drawText(String.format("%.2f", item.getPrice_per_item()), width / 2 + 160, y, paint);
             canvas.drawText(String.format("%.2f", subtotal), width - 180, y, paint);
             y += 40;
         }

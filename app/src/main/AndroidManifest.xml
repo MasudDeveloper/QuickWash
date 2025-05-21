@@ -20,6 +20,9 @@
         android:theme="@style/Theme.QuickWash"
         tools:targetApi="31">
         <activity
+            android:name=".TrackOrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".OrderDetailsActivity"
             android:exported="false" />
         <activity

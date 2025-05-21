@@ -245,8 +245,6 @@ public class MainActivity extends AppCompatActivity {
                         USER_NAME = user.getName();
                         PHONE = user.getPhone();
 
-                    } else {
-                        Toast.makeText(MainActivity.this, "User not found", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

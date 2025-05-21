@@ -427,8 +427,8 @@ public class CartFragment extends Fragment {
         canvas.drawLine(50, y, width - 50, y, paint);
         canvas.drawText("Item", 60, y + 40, paint);
         canvas.drawText("Cat", width / 2 - 150, y + 40, paint);
-        canvas.drawText("Qty", width / 2 - 50, y + 40, paint);
-        canvas.drawText("Unit", width / 2 + 50, y + 40, paint);
+        canvas.drawText("Qty", width / 2 + 60, y + 40, paint);
+        canvas.drawText("Unit", width / 2 + 160, y + 40, paint);
         canvas.drawText("Total", width - 180, y + 40, paint);
         canvas.drawLine(50, y + 60, width - 50, y + 60, paint);
         paint.setTypeface(Typeface.DEFAULT);
@@ -441,8 +441,8 @@ public class CartFragment extends Fragment {
 
             canvas.drawText(item.getService_name(), 60, y, paint);
             canvas.drawText(item.getCategory_name(), width / 2 - 150, y, paint);
-            canvas.drawText(String.valueOf(item.getQuantity()), width / 2 - 50, y, paint);
-            canvas.drawText(String.format("%.2f", item.getPrice_per_item()), width / 2 + 50, y, paint);
+            canvas.drawText(String.valueOf(item.getQuantity()), width / 2 + 60 , y, paint);
+            canvas.drawText(String.format("%.2f", item.getPrice_per_item()), width / 2 + 160, y, paint);
             canvas.drawText(String.format("%.2f", subtotal), width - 180, y, paint);
             y += 40;
         }
