@@ -5,11 +5,15 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mrdeveloper.quickwash.Model.CartCategory;
+import com.mrdeveloper.quickwash.Model.LaundryCategory;
 import com.mrdeveloper.quickwash.Model.Product;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CartManager {
 
@@ -82,4 +86,28 @@ public class CartManager {
         cartList.clear();
         saveCartToPrefs(context);
     }
+
+    public static List<CartCategory> getCartGroupedByCategory(List<LaundryCategory> categories) {
+        Map<String, List<Product>> groupedMap = new HashMap<>();
+
+        for (Product p : cartList) {
+            String categoryId = String.valueOf(p.getCategory_id());
+            if (!groupedMap.containsKey(categoryId)) {
+                groupedMap.put(categoryId, new ArrayList<>());
+            }
+            groupedMap.get(categoryId).add(p);
+        }
+
+        List<CartCategory> groupedList = new ArrayList<>();
+
+        for (LaundryCategory cat : categories) {
+            if (groupedMap.containsKey(cat.getId())) {
+                groupedList.add(new CartCategory(cat, groupedMap.get(cat.getId())));
+            }
+        }
+
+        return groupedList;
+    }
+
+
 }

@@ -33,9 +33,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         OrderRequest order = orderList.get(position);
         holder.tvShop.setText(order.getShop_name());
-        holder.tvAmount.setText("৳" + order.getTotal_amount());
         holder.tvStatus.setText(order.getStatus());
         holder.tvDate.setText(order.getCreated_at());
+        holder.tvOrderTotal.setText("Total: ৳" + order.getTotal_amount());
+        holder.tvOrderId.setText("Order ID: " + order.getId());
     }
 
     @Override
@@ -44,14 +45,16 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     }
 
     class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvShop, tvAmount, tvStatus, tvDate;
+        TextView tvShop, tvOrderId, tvAmount, tvStatus, tvDate, tvOrderTotal;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
             tvShop = itemView.findViewById(R.id.tvShopName);
-            tvAmount = itemView.findViewById(R.id.tvAmount);
+            //tvAmount = itemView.findViewById(R.id.tvAmount);
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvDate = itemView.findViewById(R.id.tvDate);
+            tvOrderTotal = itemView.findViewById(R.id.tvOrderTotal);
+            tvOrderId = itemView.findViewById(R.id.tvOrderId);
         }
     }
 }

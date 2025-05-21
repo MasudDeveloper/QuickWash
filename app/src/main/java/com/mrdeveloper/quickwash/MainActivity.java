@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     CircleImageView profile_image;
 
-    TextView user_name, refer_id;
+    TextView textViewCartCount;
     ImageView notification_icon, toolBarVerifyIcon;
 
     RelativeLayout loading_layout;
@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawerLayout);
         toolbar = findViewById(R.id.toolbar);
+        textViewCartCount = findViewById(R.id.textViewCartCount);
 
 
         botNavView = findViewById(R.id.bottomNavigationView);
@@ -256,6 +257,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void updateCartCount() {
+        int count = CartManager.getCartList().size();
+        // ধরুন আপনি কার্ট কাউন্ট দেখাতে TextView ব্যবহার করছেন
+        TextView cartCountText = findViewById(R.id.textViewCartCount);
+        if (cartCountText != null) {
+            if (count > 0) {
+                cartCountText.setVisibility(View.VISIBLE);
+                cartCountText.setText(String.valueOf(count));
+            } else {
+                cartCountText.setVisibility(View.GONE);
+            }
+        }
+    }
+
 
 
 

@@ -65,17 +65,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.btnAdd.setText("✓ Added");
             holder.btnAdd.setBackgroundColor(ContextCompat.getColor(context, R.color.blue));
 
-            // কার্ট কাউন্ট আপডেট করুন (যদি আপনার অ্যাক্টিভিটিতে কার্ট আইকন থাকে)
-            //updateCartCount();
+            // কার্ট কাউন্ট আপডেট করুন
+            if (context instanceof MainActivity) {
+                ((MainActivity) context).updateCartCount();
+            }
         });
-    }
 
-//    private void updateCartCount() {
-//        // যদি আপনার MainActivity বা অন্য কোথাও কার্ট কাউন্ট দেখানোর ব্যবস্থা থাকে
-//        if(context instanceof MainActivity) {
-//            ((MainActivity) context).updateCartCount();
-//        }
-//    }
+    }
 
     @Override
     public int getItemCount() {

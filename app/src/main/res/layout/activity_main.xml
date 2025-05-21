@@ -20,7 +20,16 @@
             app:navigationIcon="@drawable/icon_menu"
             app:menu="@menu/tool_menu"
             android:layout_marginEnd="10dp"
-            />
+            >
+            <TextView
+                android:id="@+id/textViewCartCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:padding="4dp"
+                android:visibility="gone"
+                android:text="0"/>
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <FrameLayout
             android:id="@+id/frameLayout"

@@ -36,11 +36,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mrdeveloper.quickwash.Adapter.CartAdapter;
+import com.mrdeveloper.quickwash.Adapter.GroupedCartAdapter;
 import com.mrdeveloper.quickwash.Helper.CartManager;
 import com.mrdeveloper.quickwash.Interface.ApiInterface;
 import com.mrdeveloper.quickwash.Interface.ApiResponse;
 import com.mrdeveloper.quickwash.Interface.RetrofitClient;
 import com.mrdeveloper.quickwash.MainActivity;
+import com.mrdeveloper.quickwash.Model.CartCategory;
+import com.mrdeveloper.quickwash.Model.LaundryCategory;
 import com.mrdeveloper.quickwash.Model.OrderRequest;
 import com.mrdeveloper.quickwash.Model.Product;
 import com.mrdeveloper.quickwash.Model.ServiceItem;
@@ -73,7 +76,9 @@ public class CartFragment extends Fragment {
     Spinner spinnerPaymentMethod;
 
     CartAdapter adapter;
+    GroupedCartAdapter groupedCartAdapter;
     List<Product> cartList = new ArrayList<>();
+    List<LaundryCategory> categoryList;
 
     Context context;
 
@@ -118,8 +123,15 @@ public class CartFragment extends Fragment {
         CartManager.loadCartFromPrefs(requireContext());
         cartList = CartManager.getCartList();
 
-        adapter = new CartAdapter(cartList, requireContext(), this::updateTotalUI);
-        recyclerCart.setAdapter(adapter);
+        addCategory();
+        List<CartCategory> groupedList = CartManager.getCartGroupedByCategory(categoryList);
+
+
+        groupedCartAdapter = new GroupedCartAdapter(groupedList, requireContext(), this::updateTotalUI);
+        recyclerCart.setAdapter(groupedCartAdapter);
+
+//        adapter = new CartAdapter(cartList, requireContext(), this::updateTotalUI);
+//        recyclerCart.setAdapter(adapter);
         recyclerCart.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Date picker
@@ -208,11 +220,12 @@ public class CartFragment extends Fragment {
 
     private void updateTotalUI() {
         // সামঞ্জস্য নিশ্চিত করতে সব আইটেম ক্লিয়ার করে আবার যোগ করুন
-        adapter.cartList.clear();
-        adapter.cartList.addAll(CartManager.getCartList());
+        List<CartCategory> groupedList = CartManager.getCartGroupedByCategory(categoryList); // laundryCategories অবশ্যই পাওয়া যাবে
+        groupedCartAdapter.cartList.clear();
+        groupedCartAdapter.cartList.addAll(groupedList);
 
-        adapter.notifyDataSetChanged();
-        if (adapter.cartList.isEmpty()) {
+        groupedCartAdapter.notifyDataSetChanged();
+        if (groupedCartAdapter.cartList.isEmpty()) {
             textEmptyCart.setVisibility(View.VISIBLE);
             recyclerCart.setVisibility(View.GONE);
             btnOrderNow.setEnabled(false);
@@ -357,7 +370,7 @@ public class CartFragment extends Fragment {
         titlePaint.setTextSize(48);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("Azad Laundry Services", width / 2, 100, titlePaint);
+        canvas.drawText("Quick Wash", width / 2, 100, titlePaint);
 
         Paint subTitlePaint = new Paint();
         subTitlePaint.setTextSize(32);
@@ -510,6 +523,21 @@ public class CartFragment extends Fragment {
         editDeliveryDate.setText("");
         spinnerPaymentMethod.setSelection(0);
         updateTotalUI();
+    }
+
+    public void addCategory() {
+
+        categoryList = new ArrayList<>();
+
+        categoryList.add(new LaundryCategory("1","Wash Only", "শুধু ধুয়ে দেয়া হবে", R.drawable.img_wash_only));
+        categoryList.add(new LaundryCategory("2","Wash & Fold", "ধুয়ে ভাঁজ করে দেয়া হবে", R.drawable.img_wash_and_fold));
+        categoryList.add(new LaundryCategory("3","Wash & Iron", "ধুয়ে ইস্ত্রি করা হবে", R.drawable.img_wash_and_iron));
+        categoryList.add(new LaundryCategory("4","Dry Cleaning", "ড্রাই ক্লিনিং পরিষেবা (সুট, গাউন ইত্যাদি)", R.drawable.img_dry_clean));
+        categoryList.add(new LaundryCategory("5","Iron Only", "শুধু ইস্ত্রি করা হবে", R.drawable.img_iron_only));
+        categoryList.add(new LaundryCategory("6","Shoe Cleaning", "জুতা ধোয়া ও পলিশ", R.drawable.img_shoe_cleaning));
+        categoryList.add(new LaundryCategory("7","Curtain Cleaning", "পর্দা ধোয়া ও ইস্ত্রি", R.drawable.img_curtain_cleaning));
+        categoryList.add(new LaundryCategory("8","Blanket Cleaning", "কম্বল ধোয়া", R.drawable.img_blanket_cleaning));
+
     }
 
 
