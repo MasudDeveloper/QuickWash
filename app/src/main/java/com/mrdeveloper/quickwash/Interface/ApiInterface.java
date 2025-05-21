@@ -1,5 +1,6 @@
 package com.mrdeveloper.quickwash.Interface;
 
+import com.google.gson.JsonObject;
 import com.mrdeveloper.quickwash.Model.LaundryCategory;
 import com.mrdeveloper.quickwash.Model.OrderRequest;
 import com.mrdeveloper.quickwash.Model.Product;
@@ -56,6 +57,18 @@ public interface ApiInterface {
 
     @GET("get_orders.php")
     Call<List<OrderRequest>> getOrders(@Query("user_id") int user_id);
+
+    @GET("get_order_status.php")
+    Call<JsonObject> getOrderStatus(@Query("order_id") int orderId);
+
+    @GET("orders_by_status.php")
+    Call<List<OrderRequest>> getAllOrders(@Query("user_id") int userId);
+
+    @GET("orders_by_status.php")
+    Call<List<OrderRequest>> getOrdersByStatus(
+            @Query("user_id") int userId,
+            @Query("status") String status
+    );
 
 
 }

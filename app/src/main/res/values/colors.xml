@@ -26,5 +26,14 @@
     <color name="divider_grey">#EEEEEE</color>
     <color name="primary_color">#6200EE</color>
     <color name="primary_light">#D1C4E9</color>
-    <color name="status_pending">#FFF3E0</color>
+    <color name="divider">#EEEEEE</color>
+    <color name="orange">#F44336</color>
+
+    <!-- Status Colors -->
+    <color name="status_pending">#FFA000</color>
+    <color name="status_processing">#2196F3</color>
+    <color name="status_completed">#4CAF50</color>
+    <color name="status_delivered">#8BC34A</color>
+    <color name="status_picked_up">#FFC107</color>
+    <color name="status_default">#9E9E9E</color>
 </resources>

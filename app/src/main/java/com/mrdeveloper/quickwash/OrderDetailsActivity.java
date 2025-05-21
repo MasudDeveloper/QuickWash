@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,12 +28,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.mrdeveloper.quickwash.Model.OrderRequest;
@@ -50,6 +53,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     Button btnViewInvoice, btnTrackOrder;
     OrderRequest order;
     Chip chipStatus;
+    MaterialToolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
         serviceContainer = findViewById(R.id.serviceContainer);
         btnViewInvoice = findViewById(R.id.btnViewInvoice);
         btnTrackOrder = findViewById(R.id.btnTrackOrder);
+
+        toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // Get order from intent
         order = (OrderRequest) getIntent().getSerializableExtra("order");
@@ -227,6 +239,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         btnTrackOrder.setOnClickListener(v -> {
             Intent intent = new Intent(OrderDetailsActivity.this, TrackOrderActivity.class);
+            intent.putExtra("order_id", order.getId());
             intent.putExtra("status", order.getStatus());
             startActivity(intent);
         });
@@ -241,8 +254,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 return R.color.light_blue;
             case "Processing":
                 return R.color.yellow;
-            case "Completed":
-                return R.color.light_green;
+            case "Quality Check":
+                return R.color.orange;
+            case "Out for Delivery":
+                return R.color.blue;
             case "Delivered":
                 return R.color.green;
             case "Cancelled":
@@ -424,6 +439,14 @@ public class OrderDetailsActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            getOnBackPressedDispatcher().onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
