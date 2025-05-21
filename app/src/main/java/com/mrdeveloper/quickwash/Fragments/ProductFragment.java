@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class ProductFragment extends Fragment {
     private static final String ARG_CAT_ID = "cat_id";
     private String categoryId;
     ProgressBar progressBar;
+    LinearLayout animationLayout;
 
     public static ProductFragment newInstance(String catId) {
         ProductFragment fragment = new ProductFragment();
@@ -60,6 +62,7 @@ public class ProductFragment extends Fragment {
         context = view.getContext();
 
         progressBar = view.findViewById(R.id.progressBar);
+        animationLayout = view.findViewById(R.id.animationLayout);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewProducts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -83,6 +86,11 @@ public class ProductFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     List<Product> productList = response.body().getProducts();
+                    if (productList.isEmpty()) {
+                        animationLayout.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                    animationLayout.setVisibility(View.GONE);
                     ProductAdapter adapter = new ProductAdapter(productList, getContext());
                     recyclerView.setAdapter(adapter);
                 }

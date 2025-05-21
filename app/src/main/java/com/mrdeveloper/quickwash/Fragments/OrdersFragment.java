@@ -73,15 +73,16 @@ public class OrdersFragment extends Fragment {
         call.enqueue(new Callback<List<OrderRequest>>() {
             @Override
             public void onResponse(Call<List<OrderRequest>> call, Response<List<OrderRequest>> response) {
-
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     orderList = response.body();
+                    if (orderList.isEmpty()) {
+                        animationLayout.setVisibility(View.VISIBLE);
+                        return;
+                    }
                     adapter = new OrdersAdapter(context, orderList);
                     recyclerView.setAdapter(adapter);
                     animationLayout.setVisibility(View.GONE);
-                } else {
-                    animationLayout.setVisibility(View.VISIBLE);
                 }
             }
 

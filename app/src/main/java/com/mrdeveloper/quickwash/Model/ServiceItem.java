@@ -1,6 +1,8 @@
 package com.mrdeveloper.quickwash.Model;
 
-public class ServiceItem {
+import java.io.Serializable;
+
+public class ServiceItem implements Serializable {
 
     String category_name;
     String service_name;

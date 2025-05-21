@@ -16,6 +16,37 @@
         android:visibility="gone"
         />
 
+    <LinearLayout
+        android:id="@+id/animationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:visibility="gone"
+        >
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_margin="20dp"
+            app:lottie_rawRes="@raw/no_order"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            />
+
+        <TextView
+            android:id="@+id/noOrderTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="No Services Available"
+            android:textStyle="bold"
+            android:textSize="18sp"
+
+            />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"

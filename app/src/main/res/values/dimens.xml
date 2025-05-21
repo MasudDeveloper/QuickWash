@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="card_elevation_small">2dp</dimen>
+    <dimen name="card_corner_radius">4dp</dimen>
+    <dimen name="card_stroke_width">1dp</dimen>
+</resources>

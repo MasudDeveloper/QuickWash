@@ -1,8 +1,9 @@
 package com.mrdeveloper.quickwash.Model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class OrderRequest {
+public class OrderRequest implements Serializable {
 
     int user_id, id;
     String name, phone, address, pickup_date, pickup_time, delivery_date, delivery_type, shop_name, payment_method, status, created_at;

@@ -1,6 +1,7 @@
 package com.mrdeveloper.quickwash.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mrdeveloper.quickwash.Model.OrderRequest;
+import com.mrdeveloper.quickwash.OrderDetailsActivity;
 import com.mrdeveloper.quickwash.R;
 
 import java.util.List;
@@ -42,7 +44,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         holder.btnViewDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context, OrderDetailsActivity.class);
+                intent.putExtra("order", order);
+                context.startActivity(intent);
             }
         });
 
