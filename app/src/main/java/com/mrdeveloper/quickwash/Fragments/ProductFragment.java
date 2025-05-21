@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.mrdeveloper.quickwash.Adapter.ProductAdapter;
 import com.mrdeveloper.quickwash.Helper.CartManager;
@@ -32,6 +34,7 @@ public class ProductFragment extends Fragment {
     Context context;
     private static final String ARG_CAT_ID = "cat_id";
     private String categoryId;
+    ProgressBar progressBar;
 
     public static ProductFragment newInstance(String catId) {
         ProductFragment fragment = new ProductFragment();
@@ -56,6 +59,7 @@ public class ProductFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_product, container, false);
         context = view.getContext();
 
+        progressBar = view.findViewById(R.id.progressBar);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewProducts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -70,10 +74,13 @@ public class ProductFragment extends Fragment {
         int category_id = Integer.parseInt(catId);
 
         ApiInterface apiInterface = RetrofitClient.getApiService();
+        
+        progressBar.setVisibility(View.VISIBLE);
 
         apiInterface.getProducts(category_id).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     List<Product> productList = response.body().getProducts();
                     ProductAdapter adapter = new ProductAdapter(productList, getContext());
@@ -84,6 +91,8 @@ public class ProductFragment extends Fragment {
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 // Error handling
+                Toast.makeText(context, "Network Error", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -37,6 +39,8 @@ public class OrdersFragment extends Fragment {
     List<OrderRequest> orderList;
     OrdersAdapter adapter;
     SharedPreferences sharedPreferences;
+    ProgressBar progressBar;
+    LinearLayout animationLayout;
     int user_id;
 
 
@@ -49,6 +53,8 @@ public class OrdersFragment extends Fragment {
         user_id = MainActivity.USER_ID;
 
         recyclerView = myView.findViewById(R.id.recyclerView);
+        progressBar = myView.findViewById(R.id.progressBar);
+        animationLayout = myView.findViewById(R.id.animationLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         loadOrders();
@@ -62,18 +68,26 @@ public class OrdersFragment extends Fragment {
         ApiInterface apiService = RetrofitClient.getApiService();
         Call<List<OrderRequest>> call = apiService.getOrders(user_id);
 
+        progressBar.setVisibility(View.VISIBLE);
+
         call.enqueue(new Callback<List<OrderRequest>>() {
             @Override
             public void onResponse(Call<List<OrderRequest>> call, Response<List<OrderRequest>> response) {
+
+                progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     orderList = response.body();
                     adapter = new OrdersAdapter(context, orderList);
                     recyclerView.setAdapter(adapter);
+                    animationLayout.setVisibility(View.GONE);
+                } else {
+                    animationLayout.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<List<OrderRequest>> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(context, "অর্ডার লোড করতে ব্যর্থ: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

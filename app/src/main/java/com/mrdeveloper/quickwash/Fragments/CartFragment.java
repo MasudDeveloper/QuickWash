@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -256,8 +257,12 @@ public class CartFragment extends Fragment {
         order.setTotal_amount(CartManager.getTotalAmount());
 
         List<ServiceItem> services = new ArrayList<>();
-        for (Product p : CartManager.getCartList()) {
-            services.add(new ServiceItem(p.getName(), p.getQuantity(), p.getPrice()));
+        List<CartCategory> groupedCart = CartManager.getCartGroupedByCategory(categoryList);
+        for (CartCategory cartCategory : groupedCart) {
+            String categoryName = cartCategory.getCategory().getTitle();
+            for (Product p : cartCategory.getProductList()) {
+                services.add(new ServiceItem(categoryName, p.getName(), p.getQuantity(), p.getPrice()));
+            }
         }
         order.setService_list(services);
 
@@ -365,25 +370,32 @@ public class CartFragment extends Fragment {
         Canvas canvas = new Canvas(bitmap);
         canvas.drawColor(Color.WHITE);
 
+        Context context = getContext();
+
+        // === Draw Logo ===
+        Bitmap logo = BitmapFactory.decodeResource(context.getResources(), R.drawable.only_logo);
+        Bitmap resizedLogo = Bitmap.createScaledBitmap(logo, 220, 200, false);
+        canvas.drawBitmap(resizedLogo, (width - 200) / 2, 20, null);  // Centered
+
         Paint titlePaint = new Paint();
         titlePaint.setColor(Color.BLACK);
         titlePaint.setTextSize(48);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("Quick Wash", width / 2, 100, titlePaint);
+        canvas.drawText("Quick Wash", width / 2, 250, titlePaint);
 
         Paint subTitlePaint = new Paint();
         subTitlePaint.setTextSize(32);
         subTitlePaint.setColor(Color.DKGRAY);
         subTitlePaint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("Customer Invoice", width / 2, 150, subTitlePaint);
+        canvas.drawText("Customer Invoice", width / 2, 300, subTitlePaint);
 
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
         paint.setTextSize(26);
         paint.setTextAlign(Paint.Align.LEFT);
 
-        int y = 220;
+        int y = 360;
         canvas.drawText("Order ID: " + orderId, 50, y, paint);
         canvas.drawText("Order Date: " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()), width / 2, y, paint);
 
@@ -410,11 +422,12 @@ public class CartFragment extends Fragment {
 
         y += 180;
 
-        // Draw table headers
+        // === Table Header with Category ===
         paint.setTypeface(Typeface.create(Typeface.DEFAULT_BOLD, Typeface.BOLD));
         canvas.drawLine(50, y, width - 50, y, paint);
         canvas.drawText("Item", 60, y + 40, paint);
-        canvas.drawText("Qty", width / 2 - 100, y + 40, paint);
+        canvas.drawText("Cat", width / 2 - 150, y + 40, paint);
+        canvas.drawText("Qty", width / 2 - 50, y + 40, paint);
         canvas.drawText("Unit", width / 2 + 50, y + 40, paint);
         canvas.drawText("Total", width - 180, y + 40, paint);
         canvas.drawLine(50, y + 60, width - 50, y + 60, paint);
@@ -427,7 +440,8 @@ public class CartFragment extends Fragment {
             total += subtotal;
 
             canvas.drawText(item.getService_name(), 60, y, paint);
-            canvas.drawText(String.valueOf(item.getQuantity()), width / 2 - 100, y, paint);
+            canvas.drawText(item.getCategory_name(), width / 2 - 150, y, paint);
+            canvas.drawText(String.valueOf(item.getQuantity()), width / 2 - 50, y, paint);
             canvas.drawText(String.format("%.2f", item.getPrice_per_item()), width / 2 + 50, y, paint);
             canvas.drawText(String.format("%.2f", subtotal), width - 180, y, paint);
             y += 40;
@@ -437,8 +451,8 @@ public class CartFragment extends Fragment {
         canvas.drawLine(50, y + 10, width - 50, y + 10, paint);
         canvas.drawText("Total Amount: " + String.format("%.2f BDT", total), width - 400, y + 50, paint);
 
-        // Status Seal
-        drawStatusSeal(canvas, width, y + 150, "CONFIRMED");
+        // === Draw Seal Image instead of status text ===
+        drawSealImage(canvas, width, y + 150, context);
 
         // Footer
         paint.setTextSize(24);
@@ -450,26 +464,14 @@ public class CartFragment extends Fragment {
     }
 
 
-    private void drawStatusSeal(Canvas canvas, int width, int yPos, String status) {
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(5);
-        paint.setAntiAlias(true);
 
-        // Draw circular seal
-        int centerX = width - 150;
-        int radius = 80;
-        canvas.drawCircle(centerX, yPos, radius, paint);
 
-        // Draw status text
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(30);
-        paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(status, centerX, yPos+10, paint);
-        paint.setTextSize(20);
-        canvas.drawText("ORDER", centerX, yPos+40, paint);
+    private void drawSealImage(Canvas canvas, int width, int yPos, Context context) {
+        Bitmap seal = BitmapFactory.decodeResource(context.getResources(), R.drawable.seal_pending); // seal.png
+        Bitmap resizedSeal = Bitmap.createScaledBitmap(seal, 160, 160, false);
+        canvas.drawBitmap(resizedSeal, width - 220, yPos, null);  // Top-right position
     }
+
 
     private void showInvoiceDialog(Bitmap invoiceBitmap, String orderId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
