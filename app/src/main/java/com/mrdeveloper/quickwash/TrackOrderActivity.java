@@ -1,5 +1,7 @@
 package com.mrdeveloper.quickwash;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -44,6 +47,7 @@ public class TrackOrderActivity extends AppCompatActivity {
     private String currentStatus;
     private int orderId;
     MaterialToolbar toolbar;
+    MaterialButton btnContactSupport;
 
     // Status data model
     class OrderStatus {
@@ -73,6 +77,7 @@ public class TrackOrderActivity extends AppCompatActivity {
 
         // Initialize views
         timelineContainer = findViewById(R.id.timelineContainer);
+        btnContactSupport = findViewById(R.id.btnContactSupport);
         TextView tvOrderId = findViewById(R.id.tvOrderId);
         TextView tvCurrentStatus = findViewById(R.id.tvCurrentStatus);
 
@@ -94,9 +99,13 @@ public class TrackOrderActivity extends AppCompatActivity {
 
         fetchOrderStatus(orderId);
 
-        // Setup contact button
-        findViewById(R.id.btnContactSupport).setOnClickListener(v -> {
-            // Implement contact support functionality
+        btnContactSupport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:01777777777"));
+                startActivity(intent);
+            }
         });
     }
 

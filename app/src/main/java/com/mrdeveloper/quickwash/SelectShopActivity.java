@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mrdeveloper.quickwash.Adapter.ShopAdapter;
+import com.mrdeveloper.quickwash.Model.Shop;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -28,16 +29,18 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
 public class SelectShopActivity extends AppCompatActivity {
 
-    private MapView mapView;
-    private RecyclerView recyclerView;
-    private List<String> shopList = Arrays.asList("Bismillah Laundry-2", "Palton Cleaners", "Dhaka Dry Wash");
-    private MyLocationNewOverlay locationOverlay;
+    MapView mapView;
+    RecyclerView recyclerView;
+    //List<String> shopListString = Arrays.asList("Bismillah Laundry-2", "Palton Cleaners", "Dhaka Dry Wash");
+    List<Shop> shopList;
+    MyLocationNewOverlay locationOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,8 @@ public class SelectShopActivity extends AppCompatActivity {
 
         // লোকেশন ওভারলে সেটআপ
         setupLocationOverlay();
+
+        addShopList();
 
         // রিসাইক্লার ভিউ সেটআপ
         setupRecyclerView();
@@ -130,15 +135,18 @@ public class SelectShopActivity extends AppCompatActivity {
 
     private void addShopMarkers() {
         List<GeoPoint> shopPoints = Arrays.asList(
-                new GeoPoint(23.752457960606947, 90.42342960844519), // Bismillah Laundry-2
-                new GeoPoint(23.73602975938063, 90.42124550612736), // Palton Cleaners
-                new GeoPoint(23.736352493908516, 90.41272153545023)  // Dhaka Dry Wash
+                new GeoPoint(23.73581669155619, 90.41531594590718), // Bismillah Laundry-2
+                new GeoPoint(23.728081601040326, 90.42133898994176), // Palton Cleaners
+                new GeoPoint(23.734052792520597, 90.4179465100099), // Dhaka Dry Wash
+                new GeoPoint(23.734809517604457, 90.41040305855019),  // Dhaka Dry Wash
+                new GeoPoint(23.73027186725626, 90.4104961381954)  // Dhaka Dry Wash
+
         );
 
         for (int i = 0; i < shopPoints.size(); i++) {
             Marker marker = new Marker(mapView);
             marker.setPosition(shopPoints.get(i));
-            marker.setTitle(shopList.get(i));
+            marker.setTitle(shopList.get(i).getName());
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
             marker.setIcon(ContextCompat.getDrawable(this, R.drawable.icon_marker));
             mapView.getOverlays().add(marker);
@@ -156,5 +164,15 @@ public class SelectShopActivity extends AppCompatActivity {
         super.onPause();
         mapView.onPause();
     }
+
+    public void addShopList(){
+        shopList = new ArrayList<>();
+        shopList.add(new Shop("1", "Clean & Fresh Laundry", R.drawable.img_wash_and_fold, 4.2f, 120, "Nayapalton, Dhaka", "8AM", "10PM", true));
+        shopList.add(new Shop("2", "Bright Wash", R.drawable.img_wash_only, 4.5f, 150, "Motijheel, Dhaka", "9AM", "11PM", true));
+        shopList.add(new Shop("3", "Sparkling Dry Clean", R.drawable.img_dry_clean, 4.0f, 100, "Fakirapool, Dhaka", "7AM", "9PM", true));
+        shopList.add(new Shop("4", "Eco Laundry", R.drawable.img_iron_only, 4.8f, 200, "Bijoynagar, Dhaka", "8AM", "10PM", true));
+        shopList.add(new Shop("5", "Fresh & Clean", R.drawable.img_wash_and_iron, 4.3f, 130, "Palton, Dhaka", "9AM", "11PM", true));
+    }
+
 }
 

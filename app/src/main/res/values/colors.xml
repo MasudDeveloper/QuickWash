@@ -36,4 +36,11 @@
     <color name="status_delivered">#8BC34A</color>
     <color name="status_picked_up">#FFC107</color>
     <color name="status_default">#9E9E9E</color>
+
+
+    <color name="status_open">#4CAF50</color>
+    <color name="status_open_bg">#E8F5E9</color>
+    <color name="status_closed">#F44336</color>
+    <color name="status_closed_bg">#FFEBEE</color>
+
 </resources>

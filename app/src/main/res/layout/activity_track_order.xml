@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginBottom="24dp"
-                android:text="Contact Support"
+                android:text="Contact Shop"
                 android:textAllCaps="false"
                 app:backgroundTint="@color/blue"
                 app:cornerRadius="8dp"
