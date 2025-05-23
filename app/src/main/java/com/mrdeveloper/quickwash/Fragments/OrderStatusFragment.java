@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class OrderStatusFragment extends Fragment {
     private List<OrderRequest> orderList = new ArrayList<>();
     ProgressBar progressBar;
     LinearLayout animationLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
     public static OrderStatusFragment newInstance(String status) {
@@ -66,6 +68,9 @@ public class OrderStatusFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         animationLayout = view.findViewById(R.id.animationLayout);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+
+        progressBar.setVisibility(View.VISIBLE);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -77,7 +82,10 @@ public class OrderStatusFragment extends Fragment {
         });
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setAdapter(adapter);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            loadOrders();
+        });
 
         loadOrders();
 
@@ -88,7 +96,6 @@ public class OrderStatusFragment extends Fragment {
         ApiInterface apiInterface = RetrofitClient.getApiService();
         Call<List<OrderRequest>> call;
 
-        progressBar.setVisibility(View.VISIBLE);
         animationLayout.setVisibility(View.GONE);
 
         if (statusFilter != null) {
@@ -101,6 +108,7 @@ public class OrderStatusFragment extends Fragment {
             @Override
             public void onResponse(Call<List<OrderRequest>> call, Response<List<OrderRequest>> response) {
                 progressBar.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
                 if (response.isSuccessful() && response.body() != null) {
                     orderList.clear();
                     orderList.addAll(response.body());
@@ -117,6 +125,7 @@ public class OrderStatusFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<OrderRequest>> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getContext(), "Network error", Toast.LENGTH_SHORT).show();
             }
         });

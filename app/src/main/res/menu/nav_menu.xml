@@ -1,69 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/order"
+            android:title="My Orders" />
+
+
+        <item
+            android:id="@+id/nav_offers"
+            android:icon="@drawable/icon_nav_offer"
+            android:title="Offers" />
+    </group>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/profile"
+                android:title="My Profile" />
+
+            <item
+                android:id="@+id/nav_addresses"
+                android:icon="@drawable/icon_marker"
+                android:title="Saved Addresses" />
+        </menu>
+    </item>
+
+    <item android:title="Support">
+        <menu>
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/img_nav_help_center"
+                android:title="Help Center" />
+
+            <item
+                android:id="@+id/nav_contact"
+                android:icon="@drawable/icon_nav_contact"
+                android:title="Contact Us" />
+
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/nav_about_us"
+                android:title="About Us" />
+        </menu>
+    </item>
 
     <item
-        android:id="@+id/home"
-        android:title="Home"
-        android:icon="@drawable/img_nav_home"
-        android:checkable="true"
-        />
-
-<!--    <item-->
-<!--        android:id="@+id/helpCenter"-->
-<!--        android:title="হেল্প সেন্টার"-->
-<!--        android:icon="@drawable/img_nav_help_center"-->
-<!--        android:checkable="true"-->
-<!--        />-->
-
-<!--    <item-->
-<!--        android:id="@+id/whatsApp"-->
-<!--        android:title="হেয়াটসঅ্যাপ"-->
-<!--        android:icon="@drawable/img_nav_whatsapp"-->
-<!--        android:checkable="true"-->
-<!--        />-->
-
-<!--    <item-->
-<!--        android:id="@+id/telegram"-->
-<!--        android:title="টেলিগ্রাম গ্রুপ"-->
-<!--        android:icon="@drawable/img_nav_telegram"-->
-<!--        android:checkable="true"-->
-<!--        />-->
-
-<!--    <item-->
-<!--        android:id="@+id/facebook"-->
-<!--        android:title="ফেসবুক গ্রুপ"-->
-<!--        android:icon="@drawable/img_nav_facebook"-->
-<!--        android:checkable="true"-->
-<!--        />-->
-
-<!--    <item-->
-<!--        android:id="@+id/youtube"-->
-<!--        android:title="ইউটিউব"-->
-<!--        android:icon="@drawable/img_nav_youtube"-->
-<!--        android:checkable="true"-->
-<!--        />-->
-
-<!--    <item-->
-<!--        android:id="@+id/generalQuestion"-->
-<!--        android:title="সাধারণ জিজ্ঞাসা"-->
-<!--        android:icon="@drawable/img_nav_general_question"-->
-<!--        android:checkable="true"-->
-<!--        />-->
-
-<!--    <item-->
-<!--        android:id="@+id/privacyPolicy"-->
-<!--        android:title="প্রাইভেসি পলিসি"-->
-<!--        android:icon="@drawable/img_nav_privacy_policy"-->
-<!--        android:checkable="true"-->
-<!--        />-->
-
-    <item
-        android:id="@+id/logout"
-        android:title="Logout"
+        android:id="@+id/nav_logout"
         android:icon="@drawable/img_nav_logout"
-        android:checkable="true"
-        />
-
-
+        android:title="Logout" />
 </menu>

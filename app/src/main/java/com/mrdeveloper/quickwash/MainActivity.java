@@ -139,11 +139,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                if (item.getItemId() == R.id.home) {
+                if (item.getItemId() == R.id.nav_home) {
                     replaceFragment(new HomeFragment());
                     drawerLayout.close();
                     return true;
-                } else if (item.getItemId() == R.id.logout) {
+                } else if (item.getItemId() == R.id.nav_logout) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("phone","").apply();
                     startActivity(new Intent(MainActivity.this,LoginActivity.class));

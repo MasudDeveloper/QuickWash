@@ -70,5 +70,12 @@ public interface ApiInterface {
             @Query("status") String status
     );
 
+    @GET("get_orders_by_status_home.php")
+    Call<List<OrderRequest>> getOrdersByStatusHome(
+            @Query("user_id") int userId,
+            @Query("status") String status
+    );
+
+
 
 }
