@@ -19,6 +19,21 @@ public class CartManager {
 
     private static final String PREF_NAME = "QuickWashCart";
     private static final String CART_KEY = "cart_items";
+    private static String deliveryType = "Regular"; // default
+    private static String appliedPromoCode = "";
+    private static double discountAmount = 0.0;
+
+    public static double getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public static String getAppliedPromoCode() {
+        return appliedPromoCode;
+    }
+
+    public static void setDeliveryType(String type) {
+        deliveryType = type;
+    }
 
     private static List<Product> cartList = new ArrayList<>();
 
@@ -84,6 +99,9 @@ public class CartManager {
 
     public static void clearCart(Context context) {
         cartList.clear();
+        deliveryType = "Regular";
+        appliedPromoCode = "";
+        discountAmount = 0.0;
         saveCartToPrefs(context);
     }
 
@@ -108,6 +126,44 @@ public class CartManager {
 
         return groupedList;
     }
+
+    public static double getGrandTotal() {
+        return getTotalAmount() + getDeliveryCharge() - getDiscountAmount();
+    }
+
+
+    public static double getDeliveryCharge() {
+        switch (deliveryType) {
+            case "Premium":
+                return 100.0;
+            case "Express":
+                return 150.0;
+            case "Regular":
+                return 50.0;
+            default:
+                return 0.0;
+        }
+    }
+
+
+    public static boolean applyPromoCode(String code) {
+        switch (code.toUpperCase()) {
+            case "SAVE10":
+                discountAmount = 10.0;
+                appliedPromoCode = code;
+                return true;
+            case "SAVE50":
+                discountAmount = 50.0;
+                appliedPromoCode = code;
+                return true;
+            default:
+                discountAmount = 0.0;
+                appliedPromoCode = "";
+                return false;
+        }
+    }
+
+
 
 
 }

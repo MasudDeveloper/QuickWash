@@ -7,13 +7,17 @@ import com.mrdeveloper.quickwash.Model.Product;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -74,6 +78,26 @@ public interface ApiInterface {
     Call<List<OrderRequest>> getOrdersByStatusHome(
             @Query("user_id") int userId,
             @Query("status") String status
+    );
+
+    // ================== Update Profile
+    @FormUrlEncoded
+    @POST("update_profile.php")
+    Call<ApiResponse> updateProfile(
+            @Field("user_id") int userId,
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("phone") String phone,
+            @Field("gender") String gender,
+            @Field("date_of_birth") String dob,
+            @Field("address") String address
+    );
+
+    @Multipart
+    @POST("upload_profile_image.php")
+    Call<ApiResponse> uploadProfileImage(
+            @Part("user_id") RequestBody userId,
+            @Part MultipartBody.Part image
     );
 
 

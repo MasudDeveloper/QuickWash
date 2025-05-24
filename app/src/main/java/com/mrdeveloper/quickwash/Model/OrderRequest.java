@@ -7,7 +7,7 @@ public class OrderRequest implements Serializable {
 
     int user_id, id;
     String name, phone, address, pickup_date, pickup_time, delivery_date, delivery_type, shop_name, payment_method, status, created_at;
-    double total_amount;
+    double total_amount, delivery_charge, discount_amount;
     List<ServiceItem> service_list;
 
     public OrderRequest() {
@@ -131,5 +131,21 @@ public class OrderRequest implements Serializable {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+    public double getDelivery_charge() {
+        return delivery_charge;
+    }
+
+    public void setDelivery_charge(double delivery_charge) {
+        this.delivery_charge = delivery_charge;
+    }
+
+    public double getDiscount_amount() {
+        return discount_amount;
+    }
+
+    public void setDiscount_amount(double discount_amount) {
+        this.discount_amount = discount_amount;
     }
 }

@@ -119,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         TextView navTvName = headerView.findViewById(R.id.tvName);
-        TextView navTvRefer = headerView.findViewById(R.id.tvRefer);
-        ImageView navCopyButton = headerView.findViewById(R.id.copyButton);
+
 
 
         navigationView.setItemIconTintList(null);
@@ -181,23 +180,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        navCopyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String referText = navTvRefer.getText().toString();
-                if (!referText.isEmpty()) {
-                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clipData = ClipData.newPlainText("Copied Text", referText);
-                    clipboardManager.setPrimaryClip(clipData);
-                    //Toast.makeText(MainActivity.this, "Copied: " + referText, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "No data to copy", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        // 2. BadgeDrawable তৈরি করুন
 
 
 

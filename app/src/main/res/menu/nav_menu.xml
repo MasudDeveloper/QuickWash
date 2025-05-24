@@ -6,19 +6,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/home"
+            android:icon="@drawable/img_nav_home"
             android:title="Home" />
 
         <item
             android:id="@+id/nav_orders"
-            android:icon="@drawable/order"
+            android:icon="@drawable/icon_order"
             android:title="My Orders" />
-
 
         <item
             android:id="@+id/nav_offers"
             android:icon="@drawable/icon_nav_offer"
             android:title="Offers" />
+
+        <item
+            android:id="@+id/nav_categories"
+            android:icon="@drawable/icon_categories"
+            android:title="Categories" />
+
     </group>
 
     <item android:title="Account">

@@ -12,7 +12,7 @@
         android:id="@+id/navProfileImage"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:src="@drawable/user_icon"
+        android:src="@drawable/profile_image"
         app:civ_border_width="2dp"
         app:civ_border_color="#4FC3F7"
         android:layout_marginBottom="10dp"
@@ -43,43 +43,6 @@
 <!--            />-->
     </LinearLayout>
 
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="15dp"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="Affiliate ID: "
-            android:textIsSelectable="true"
-            android:textColor="#FFFFFF"
-            />
-
-        <TextView
-            android:id="@+id/tvRefer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:paddingEnd="20dp"
-            android:text="654522"
-            android:textIsSelectable="true"
-            android:textColor="#FFFFFF"
-            />
-
-        <ImageView
-            android:id="@+id/copyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_email_24"
-            />
-    </LinearLayout>
 
 
 </LinearLayout>

@@ -19,7 +19,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/profile_cover_gradient">
+            >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
@@ -28,8 +28,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_dry_clean"
-                app:civ_border_color="@color/white"
+                android:src="@drawable/demo_user"
+                app:civ_border_color="@color/blue"
                 app:civ_border_width="2dp" />
 
             <TextView
@@ -39,8 +39,8 @@
                 android:layout_below="@id/profile_image"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="User Name"
-                android:textColor="@color/white"
+                android:text="Masud Rana"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -52,7 +52,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:text="01600-000000"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -93,7 +93,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="25"
+                        android:text="2"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
@@ -134,7 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="25"
+                        android:text="0"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
@@ -175,7 +175,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="25"
+                        android:text="1"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
@@ -240,8 +240,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/user_icon"
-                            app:tint="@color/secondary_text"
+                            android:src="@drawable/profile"
                             />
 
                         <TextView
@@ -249,7 +248,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="user@example.com"
+                            android:text="masud@gmail.com"
                             android:textColor="@color/primary_text"
                             android:textSize="14sp"/>
                     </LinearLayout>
@@ -263,8 +262,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/user_icon"
-                            app:tint="@color/secondary_text"
+                            android:src="@drawable/icon_marker"
                             />
 
                         <TextView
@@ -272,7 +270,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="01600-000000"
+                            android:text="Nayapaltan, Dhaka"
                             android:textColor="@color/primary_text"
                             android:textSize="14sp"/>
                     </LinearLayout>
@@ -286,8 +284,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/user_icon"
-                            app:tint="@color/secondary_text"
+                            android:src="@drawable/icon_gender"
                             />
 
                         <TextView
@@ -328,6 +325,7 @@
 
                     <!-- Settings Items -->
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/edit_profile_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"

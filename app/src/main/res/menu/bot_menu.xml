@@ -10,14 +10,14 @@
 
     <item
         android:id="@+id/category"
-        android:title="Category"
+        android:title="List"
         android:icon="@drawable/icon_categories"
         android:checkable="true"
         />
 
     <item
         android:id="@+id/order"
-        android:title="Orders"
+        android:title="Order"
         android:icon="@drawable/order"
         android:checkable="true"
         />

@@ -3,10 +3,12 @@ package com.mrdeveloper.quickwash.Fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +30,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,9 +74,9 @@ import retrofit2.Response;
 public class CartFragment extends Fragment {
 
     RecyclerView recyclerCart;
-    TextView textViewTotal, textEmptyCart;
-    Button btnOrderNow;
-    EditText editName, editPhone, editAddress, editPickupDate, editPickupTime, editDeliveryDate;
+    TextView textSubtotal, textEmptyCart, textDeliveryCharge, textDiscount, textGrandTotal;
+    Button btnOrderNow, btnApplyPromo;
+    EditText editName, editPhone, editAddress, editPickupDate, editPickupTime, editDeliveryDate, editPromoCode;
     Spinner spinnerPaymentMethod;
 
     CartAdapter adapter;
@@ -87,6 +90,7 @@ public class CartFragment extends Fragment {
     Button btnSelectShop;
     TextView textDeliveryTime;
     String deliveryType = "", selectedShop = "";
+    double subtotal, delivery, discount, grandTotal;
 
 
     @Override
@@ -96,9 +100,14 @@ public class CartFragment extends Fragment {
 
         context = myView.getContext();
         recyclerCart = myView.findViewById(R.id.recyclerCart);
-        textViewTotal = myView.findViewById(R.id.textViewTotal);
+        textSubtotal = myView.findViewById(R.id.textSubtotal);
+        textDeliveryCharge = myView.findViewById(R.id.textDeliveryCharge);
+        textDiscount = myView.findViewById(R.id.textDiscount);
+        textGrandTotal = myView.findViewById(R.id.textGrandTotal);
         textEmptyCart = myView.findViewById(R.id.textEmptyCart);
         btnOrderNow = myView.findViewById(R.id.btnOrderNow);
+        btnApplyPromo = myView.findViewById(R.id.btnApplyPromo);
+        editPromoCode = myView.findViewById(R.id.editPromoCode);
         editName = myView.findViewById(R.id.editName);
         editPhone = myView.findViewById(R.id.editPhone);
         editAddress = myView.findViewById(R.id.editAddress);
@@ -145,18 +154,24 @@ public class CartFragment extends Fragment {
             deliveryType = "Regular";
             textDeliveryTime.setText("Delivery Time: 48 hours");
             updateCardSelection(cardRegular, cardPremium, cardExpress);
+            CartManager.setDeliveryType("Regular");
+            updateTotalUI();
         });
 
         cardPremium.setOnClickListener(v -> {
             deliveryType = "Premium";
             textDeliveryTime.setText("Delivery Time: 24 hours");
             updateCardSelection(cardPremium, cardRegular, cardExpress);
+            CartManager.setDeliveryType("Premium");
+            updateTotalUI();
         });
 
         cardExpress.setOnClickListener(v -> {
             deliveryType = "Express";
             textDeliveryTime.setText("Delivery Time: 12 hours");
             updateCardSelection(cardExpress, cardRegular, cardPremium);
+            CartManager.setDeliveryType("Express");
+            updateTotalUI();
         });
 
         // দোকান সিলেক্ট বাটন
@@ -165,8 +180,17 @@ public class CartFragment extends Fragment {
             startActivityForResult(intent, 101);
         });
 
-
         updateTotalUI();
+
+        btnApplyPromo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String promo = editPromoCode.getText().toString().trim().toUpperCase();
+
+                CartManager.applyPromoCode(promo); // Method below 👇
+                updateTotalUI(); // উপরের checkout UI update method
+            }
+        });
 
         btnOrderNow.setOnClickListener(v -> {
 
@@ -230,12 +254,23 @@ public class CartFragment extends Fragment {
             textEmptyCart.setVisibility(View.VISIBLE);
             recyclerCart.setVisibility(View.GONE);
             btnOrderNow.setEnabled(false);
-            textViewTotal.setText("Total: ৳ 0");
+            textSubtotal.setText("৳ 0");
+            textDeliveryCharge.setText("৳ 0");
+            textDiscount.setText("৳ 0");
+            textGrandTotal.setText("৳ 0");
         } else {
             textEmptyCart.setVisibility(View.GONE);
             recyclerCart.setVisibility(View.VISIBLE);
             btnOrderNow.setEnabled(true);
-            textViewTotal.setText("Total: ৳ " + CartManager.getTotalAmount());
+            subtotal = CartManager.getTotalAmount();
+            delivery = CartManager.getDeliveryCharge();
+            discount = CartManager.getDiscountAmount();
+            grandTotal = CartManager.getGrandTotal();
+
+            textSubtotal.setText("৳" + String.format("%.2f", subtotal));
+            textDeliveryCharge.setText("৳" + String.format("%.2f", delivery));
+            textDiscount.setText("-৳" + String.format("%.2f", discount));
+            textGrandTotal.setText("৳" + String.format("%.2f", grandTotal));
         }
     }
 
@@ -252,6 +287,8 @@ public class CartFragment extends Fragment {
         order.setPickup_time(pickupTime);
         order.setDelivery_date(deliveryDate);
         order.setDelivery_type(deliveryType);
+        order.setDelivery_charge(CartManager.getDeliveryCharge());
+        order.setDiscount_amount(CartManager.getDiscountAmount());
         order.setShop_name(selectedShop);
         order.setPayment_method(paymentMethod);
         order.setTotal_amount(CartManager.getTotalAmount());
@@ -301,12 +338,15 @@ public class CartFragment extends Fragment {
             }
         });
     }
+
     private void showSuccessDialog() {
-        new AlertDialog.Builder(getContext())
-                .setTitle("Order Confirmed")
-                .setMessage("Thank you! Your laundry order has been placed.")
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                .show();
+        Dialog successDialog = new Dialog(getContext());
+        successDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        successDialog.setContentView(R.layout.dialog_order_success);
+
+        successDialog.show();
+
+
     }
 
     private void showDatePicker(EditText editText) {
@@ -365,7 +405,7 @@ public class CartFragment extends Fragment {
 
     private Bitmap generateInvoiceBitmap(OrderRequest order, String orderId) {
         int width = 1080;
-        int height = 1920;
+        int height = 1800;
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         canvas.drawColor(Color.WHITE);
@@ -382,7 +422,7 @@ public class CartFragment extends Fragment {
         titlePaint.setTextSize(48);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titlePaint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("Quick Wash", width / 2, 250, titlePaint);
+        canvas.drawText("Fast Wash", width / 2, 250, titlePaint);
 
         Paint subTitlePaint = new Paint();
         subTitlePaint.setTextSize(32);
@@ -434,27 +474,48 @@ public class CartFragment extends Fragment {
         paint.setTypeface(Typeface.DEFAULT);
 
         y += 100;
-        double total = 0;
+        double subtotal = 0;
         for (ServiceItem item : order.getService_list()) {
-            double subtotal = item.getQuantity() * item.getPrice_per_item();
-            total += subtotal;
+            double itemTotal = item.getQuantity() * item.getPrice_per_item();
+            subtotal += itemTotal;
 
             canvas.drawText(item.getService_name(), 60, y, paint);
             canvas.drawText(item.getCategory_name(), width / 2 - 150, y, paint);
             canvas.drawText(String.valueOf(item.getQuantity()), width / 2 + 60 , y, paint);
             canvas.drawText(String.format("%.2f", item.getPrice_per_item()), width / 2 + 160, y, paint);
-            canvas.drawText(String.format("%.2f", subtotal), width - 180, y, paint);
+            canvas.drawText(String.format("%.2f", itemTotal), width - 180, y, paint);
             y += 40;
         }
 
+        // === Checkout Summary ===
+        double deliveryCharge = order.getDelivery_charge();   // Make sure this exists
+        double discount = order.getDiscount_amount();         // Make sure this exists
+        double grandTotal = subtotal + deliveryCharge - discount;
+
+        y += 20;
         paint.setTypeface(Typeface.create(Typeface.DEFAULT_BOLD, Typeface.BOLD));
-        canvas.drawLine(50, y + 10, width - 50, y + 10, paint);
-        canvas.drawText("Total Amount: " + String.format("%.2f BDT", total), width - 400, y + 50, paint);
+        canvas.drawLine(50, y, width - 50, y, paint);
+        y += 40;
+
+        canvas.drawText("Subtotal:", width - 400, y, paint);
+        canvas.drawText(String.format("%.2f BDT", subtotal), width - 200, y, paint);
+        y += 40;
+
+        canvas.drawText("Delivery Charge:", width - 400, y, paint);
+        canvas.drawText(String.format("%.2f BDT", deliveryCharge), width - 200, y, paint);
+        y += 40;
+
+        canvas.drawText("Discount:", width - 400, y, paint);
+        canvas.drawText(String.format("-%.2f BDT", discount), width - 200, y, paint);
+        y += 40;
+
+        canvas.drawText("Grand Total:", width - 400, y, paint);
+        canvas.drawText(String.format("%.2f BDT", grandTotal), width - 200, y, paint);
 
         // === Draw Seal Image instead of status text ===
-        drawSealImage(canvas, width, y + 150, context);
+        drawSealImage(canvas, width, y + 100, context);
 
-        // Footer
+        // === Footer ===
         paint.setTextSize(24);
         paint.setTypeface(Typeface.DEFAULT);
         canvas.drawText("Thank you for choosing us!", 50, height - 120, paint);
@@ -462,6 +523,7 @@ public class CartFragment extends Fragment {
 
         return bitmap;
     }
+
 
 
 
@@ -490,7 +552,12 @@ public class CartFragment extends Fragment {
             Toast.makeText(getContext(), "Invoice saved to gallery", Toast.LENGTH_SHORT).show();
         });
 
-        builder.setNegativeButton("Close", null);
+        builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                showSuccessDialog();
+            }
+        });
         builder.show();
     }
 
@@ -524,6 +591,13 @@ public class CartFragment extends Fragment {
         editPickupTime.setText("");
         editDeliveryDate.setText("");
         spinnerPaymentMethod.setSelection(0);
+        btnSelectShop.setText("Select Shop");
+        selectedShop = "";
+        updateCardSelection(cardPremium, cardRegular, cardExpress);
+        CartManager.setDeliveryType("Regular");
+        deliveryType = "Regular";
+        CartManager.clearCart(getContext());
+        editPromoCode.setText("");
         updateTotalUI();
     }
 
